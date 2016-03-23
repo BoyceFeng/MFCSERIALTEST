@@ -46,5 +46,14 @@ public:
 	CComboBox m_PortParity;
 	afx_msg void OnBnClicked_ClosePort();
 
+	CButton m_HexRcvCBtn;
+	CButton m_CharRcvCBtn;
+	CButton m_HexSendCBtn;
+	CButton m_CharSendCBtn;
+
 	long count;
+	afx_msg void OnBnClickedRecCBtn();
+	afx_msg void OnBnClickedCharRecCBtn();
+	afx_msg void OnBnClickedHexSendCBtn();
+	afx_msg void OnBnClickedCharSendCBtn();
 };

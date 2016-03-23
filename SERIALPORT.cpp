@@ -660,7 +660,6 @@ BOOL CSerialPort::RecvData(LPCTSTR lpszData, const int nSize)
 	}
 	return TRUE;
 }
-
 //查询注册表的串口号，将值存于数组中
 void CSerialPort::QueryKey(HKEY hKey)
 {

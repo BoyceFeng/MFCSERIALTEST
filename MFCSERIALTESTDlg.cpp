@@ -65,6 +65,10 @@ void CMFCSERIALTESTDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO3, m_PortDataBits);
 	DDX_Control(pDX, IDC_COMBO4, m_PortStopBits);
 	DDX_Control(pDX, IDC_COMBO5, m_PortParity);
+	DDX_Control(pDX, IDC_CHECK3, m_HexRcvCBtn);
+	DDX_Control(pDX, IDC_CHECK4, m_CharRcvCBtn);
+	DDX_Control(pDX, IDC_CHECK1, m_HexSendCBtn);
+	DDX_Control(pDX, IDC_CHECK2, m_CharSendCBtn);
 }
 
 BEGIN_MESSAGE_MAP(CMFCSERIALTESTDlg, CDialogEx)
@@ -75,6 +79,10 @@ BEGIN_MESSAGE_MAP(CMFCSERIALTESTDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CMFCSERIALTESTDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON7, &CMFCSERIALTESTDlg::OnBnClicked_ClosePort)
 	ON_MESSAGE(WM_COMM_RXCHAR, &CMFCSERIALTESTDlg::OnRecvData)
+	ON_BN_CLICKED(IDC_CHECK3, &CMFCSERIALTESTDlg::OnBnClickedRecCBtn)
+	ON_BN_CLICKED(IDC_CHECK4, &CMFCSERIALTESTDlg::OnBnClickedCharRecCBtn)
+	ON_BN_CLICKED(IDC_CHECK1, &CMFCSERIALTESTDlg::OnBnClickedHexSendCBtn)
+	ON_BN_CLICKED(IDC_CHECK2, &CMFCSERIALTESTDlg::OnBnClickedCharSendCBtn)
 END_MESSAGE_MAP()
 
 // CMFCSERIALTESTDlg 消息处理程序
@@ -110,6 +118,7 @@ BOOL CMFCSERIALTESTDlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化代码
 	//m_SerialPort = new CSerialPort();
+	//初始化串口配置
 	m_SerialPort.Hkey2ComboBox(m_ComPortNO);
 	m_PortBaud.SetCurSel(6);
 	m_PortDataBits.SetCurSel(0);
@@ -117,6 +126,9 @@ BOOL CMFCSERIALTESTDlg::OnInitDialog()
 	m_PortParity.SetCurSel(0);
 
 	count = 0;
+	//初始化发送/接收类型
+	m_HexRcvCBtn.SetCheck(1);
+	m_HexSendCBtn.SetCheck(1);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -183,10 +195,21 @@ LRESULT CMFCSERIALTESTDlg::OnRecvData(WPARAM wParam, LPARAM lParam)
 	return TRUE;
 	*/
 	count++;
-	m_Receive.Format(_T("%d"), count);
-	//m_Receive += "接收到数据！";
-	UpdateData(FALSE);
-	//count = 0;
+	//unsigned char buffer[1024];
+	//buffer[count] = (char)wParam;
+	// m_Receive.Format(_T("%d"), count);
+	if (m_CharRcvCBtn.GetCheck())
+	{
+		m_Receive = (char)wParam;
+		UpdateData(FALSE);
+	}
+	else if (m_HexRcvCBtn.GetCheck())
+	{
+		//m_Receive = (char)wParam;
+		m_Receive.Format(m_Receive + _T("%4x"), wParam);
+		UpdateData(FALSE);
+	}
+
 	return TRUE;
 }
 
@@ -326,6 +349,10 @@ void CMFCSERIALTESTDlg::OnBnClickedButton1()
 	{
 		AfxMessageBox(_T("串口线程已成功启动"));
 	}
+	else
+	{
+		AfxMessageBox(_T("串口线程启动失败，请检查原因！"));
+	}
 }
 
 void CMFCSERIALTESTDlg::OnBnClickedButton3()
@@ -338,4 +365,32 @@ void CMFCSERIALTESTDlg::OnBnClickedButton3()
 void CMFCSERIALTESTDlg::OnBnClicked_ClosePort()
 {
 	m_SerialPort.ClosePort();
+}
+
+
+void CMFCSERIALTESTDlg::OnBnClickedRecCBtn()
+{
+	m_HexRcvCBtn.SetCheck(1);
+	m_CharRcvCBtn.SetCheck(0);
+}
+
+
+void CMFCSERIALTESTDlg::OnBnClickedCharRecCBtn()
+{
+	m_HexRcvCBtn.SetCheck(0);
+	m_CharRcvCBtn.SetCheck(1);
+}
+
+
+void CMFCSERIALTESTDlg::OnBnClickedHexSendCBtn()
+{
+	m_HexSendCBtn.SetCheck(1);
+	m_CharSendCBtn.SetCheck(0);
+}
+
+
+void CMFCSERIALTESTDlg::OnBnClickedCharSendCBtn()
+{
+	m_HexSendCBtn.SetCheck(0);
+	m_CharSendCBtn.SetCheck(1);
 }

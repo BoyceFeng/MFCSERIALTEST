@@ -1,4 +1,4 @@
-﻿生成启动时间为 2016/3/23 星期三 上午 11:36:43。
+﻿生成启动时间为 2016/3/23 星期三 下午 5:31:42。
      1>项目“D:\我的文档\Visual Studio 2013\Projects\MFCSERIALTEST\MFCSERIALTEST\MFCSERIALTEST.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          D:\Software\Visual Studio 2013\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _CRT_SECURE_NO_WARNINGS /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\MFCSERIALTEST.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt MFCSERIALTESTDlg.cpp
@@ -15,4 +15,4 @@
 
 生成成功。
 
-已用时间 00:00:00.98
+已用时间 00:00:00.43
