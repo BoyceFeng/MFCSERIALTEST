@@ -83,6 +83,8 @@ BEGIN_MESSAGE_MAP(CMFCSERIALTESTDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK4, &CMFCSERIALTESTDlg::OnBnClickedCharRecCBtn)
 	ON_BN_CLICKED(IDC_CHECK1, &CMFCSERIALTESTDlg::OnBnClickedHexSendCBtn)
 	ON_BN_CLICKED(IDC_CHECK2, &CMFCSERIALTESTDlg::OnBnClickedCharSendCBtn)
+	ON_BN_CLICKED(IDC_BUTTON5, &CMFCSERIALTESTDlg::OnBnClickedClrSData)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMFCSERIALTESTDlg::OnBnClickedSendData)
 END_MESSAGE_MAP()
 
 // CMFCSERIALTESTDlg 消息处理程序
@@ -393,4 +395,70 @@ void CMFCSERIALTESTDlg::OnBnClickedCharSendCBtn()
 {
 	m_HexSendCBtn.SetCheck(0);
 	m_CharSendCBtn.SetCheck(1);
+}
+
+
+void CMFCSERIALTESTDlg::OnBnClickedClrSData()
+{
+	m_Send = "";
+	UpdateData(FALSE);
+}
+
+
+void CMFCSERIALTESTDlg::OnBnClickedSendData()
+{
+	if (m_HexSendCBtn.GetCheck())
+	{
+		UpdateData(TRUE);
+		CByteArray hexdata;
+		String2Hex(m_Send, hexdata);
+		//m_SerialPort.WriteToPort(hexdata);
+	}
+	else if (true)
+	{
+
+	}
+}
+
+int CMFCSERIALTESTDlg::String2Hex(CString str, CByteArray &senddata)
+{
+	int hexdata, lowhexdata;
+	int hexdatalen = 0;
+	int len = str.GetLength();
+	senddata.SetSize(len / 2);
+	for (int i = 0; i<len;)
+	{
+		char lstr, hstr = str[i];
+		if (hstr == ' ')
+		{
+			i++;
+			continue;
+		}
+		i++;
+		if (i >= len)
+			break;
+		lstr = str[i];
+		hexdata = ConvertHexChar(hstr);
+		lowhexdata = ConvertHexChar(lstr);
+		if ((hexdata == 16) || (lowhexdata == 16))
+			break;
+		else
+			hexdata = hexdata * 16 + lowhexdata;
+		i++;
+		senddata[hexdatalen] = (char)hexdata;
+		hexdatalen++;
+	}
+	senddata.SetSize(hexdatalen);
+	return hexdatalen;
+}
+
+char CMFCSERIALTESTDlg::ConvertHexChar(char ch)
+{
+	if ((ch >= '0') && (ch <= '9'))
+		return ch - 0x30;
+	else if ((ch >= 'A') && (ch <= 'F'))
+		return ch - 'A' + 10;
+	else if ((ch >= 'a') && (ch <= 'f'))
+		return ch - 'a' + 10;
+	else return (-1);
 }

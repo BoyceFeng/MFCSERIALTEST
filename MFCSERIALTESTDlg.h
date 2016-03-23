@@ -56,4 +56,9 @@ public:
 	afx_msg void OnBnClickedCharRecCBtn();
 	afx_msg void OnBnClickedHexSendCBtn();
 	afx_msg void OnBnClickedCharSendCBtn();
+	afx_msg void OnBnClickedClrSData();
+	afx_msg void OnBnClickedSendData();
+
+	int CMFCSERIALTESTDlg::String2Hex(CString str, CByteArray &senddata);
+	char CMFCSERIALTESTDlg::ConvertHexChar(char ch);
 };
