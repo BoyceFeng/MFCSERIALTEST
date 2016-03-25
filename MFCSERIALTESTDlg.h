@@ -51,7 +51,7 @@ public:
 	CButton m_HexSendCBtn;
 	CButton m_CharSendCBtn;
 
-	long count;
+	//long count;
 	afx_msg void OnBnClickedRecCBtn();
 	afx_msg void OnBnClickedCharRecCBtn();
 	afx_msg void OnBnClickedHexSendCBtn();
@@ -59,6 +59,8 @@ public:
 	afx_msg void OnBnClickedClrSData();
 	afx_msg void OnBnClickedSendData();
 
-	int CMFCSERIALTESTDlg::String2Hex(CString str, CByteArray &senddata);
+	int CMFCSERIALTESTDlg::String2Hex(CString str, BYTE *senddata);
 	char CMFCSERIALTESTDlg::ConvertHexChar(char ch);
+	afx_msg void OnBnClickedReFindPort();
+	afx_msg void OnBnClickedSaveRecData();
 };

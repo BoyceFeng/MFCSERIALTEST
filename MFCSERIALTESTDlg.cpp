@@ -85,10 +85,11 @@ BEGIN_MESSAGE_MAP(CMFCSERIALTESTDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK2, &CMFCSERIALTESTDlg::OnBnClickedCharSendCBtn)
 	ON_BN_CLICKED(IDC_BUTTON5, &CMFCSERIALTESTDlg::OnBnClickedClrSData)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMFCSERIALTESTDlg::OnBnClickedSendData)
+	ON_BN_CLICKED(IDC_BUTTON4, &CMFCSERIALTESTDlg::OnBnClickedReFindPort)
+	ON_BN_CLICKED(IDC_BUTTON6, &CMFCSERIALTESTDlg::OnBnClickedSaveRecData)
 END_MESSAGE_MAP()
 
 // CMFCSERIALTESTDlg 消息处理程序
-
 BOOL CMFCSERIALTESTDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -121,16 +122,16 @@ BOOL CMFCSERIALTESTDlg::OnInitDialog()
 	// TODO:  在此添加额外的初始化代码
 	//m_SerialPort = new CSerialPort();
 	//初始化串口配置
-	m_SerialPort.Hkey2ComboBox(m_ComPortNO);
-	m_PortBaud.SetCurSel(6);
-	m_PortDataBits.SetCurSel(0);
-	m_PortStopBits.SetCurSel(0);
-	m_PortParity.SetCurSel(0);
+	m_SerialPort.Hkey2ComboBox(m_ComPortNO);//搜索串口，并将有效串口显示到下拉列表中
+	m_PortBaud.SetCurSel(6);//默认波特率9600
+	m_PortDataBits.SetCurSel(0);//默认数据位8bit
+	m_PortStopBits.SetCurSel(0);//默认停止位1bit
+	m_PortParity.SetCurSel(0);//默认奇偶校检位是无
 
-	count = 0;
+	//count = 0;
 	//初始化发送/接收类型
-	m_HexRcvCBtn.SetCheck(1);
-	m_HexSendCBtn.SetCheck(1);
+	m_HexRcvCBtn.SetCheck(1);//默认十六进制显示接收
+	m_HexSendCBtn.SetCheck(1);//默认十六进制发送
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -184,6 +185,7 @@ HCURSOR CMFCSERIALTESTDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+//接收到数据的消息响应函数
 LRESULT CMFCSERIALTESTDlg::OnRecvData(WPARAM wParam, LPARAM lParam)
 {
 	/*
@@ -196,22 +198,25 @@ LRESULT CMFCSERIALTESTDlg::OnRecvData(WPARAM wParam, LPARAM lParam)
 	UpdateData(false);
 	return TRUE;
 	*/
-	count++;
+	//count++;
 	//unsigned char buffer[1024];
 	//buffer[count] = (char)wParam;
 	// m_Receive.Format(_T("%d"), count);
 	if (m_CharRcvCBtn.GetCheck())
 	{
-		m_Receive = (char)wParam;
-		UpdateData(FALSE);
+		m_Receive = m_Receive + (char)wParam;
+		//OutputDebugString(m_Receive + "\n");
+		
 	}
 	else if (m_HexRcvCBtn.GetCheck())
 	{
 		//m_Receive = (char)wParam;
 		m_Receive.Format(m_Receive + _T("%4x"), wParam);
-		UpdateData(FALSE);
+		//OutputDebugString(m_Receive + "\n");
 	}
-
+	//m_Receive.Format(m_Receive + _T("%d"), count);
+	//
+	UpdateData(FALSE);
 	return TRUE;
 }
 
@@ -233,9 +238,10 @@ void CMFCSERIALTESTDlg::OnBnClickedButton1()
 		char ch = portnrStr[i];
 		//portnr = (UINT)ch;
 		m_Receive += ch;
-		UpdateData(FALSE);
 	}
 	portnr = atoi(m_Receive);
+	m_Receive = "打开串口" + m_Receive;
+	UpdateData(FALSE);
 	m_Receive = "";
 	//110;300;600;1200;2400;4800;9600;14400;19200;28800;38400;56000;57600;115200;128000;256000;
 	switch (m_PortBaud.GetCurSel())
@@ -357,75 +363,85 @@ void CMFCSERIALTESTDlg::OnBnClickedButton1()
 	}
 }
 
+//清除接收框内容
 void CMFCSERIALTESTDlg::OnBnClickedButton3()
 {
 	m_Receive = "";
 	UpdateData(false);
 }
 
-
+//关闭串口
 void CMFCSERIALTESTDlg::OnBnClicked_ClosePort()
 {
 	m_SerialPort.ClosePort();
 }
 
-
+//选择十六进制模式显示接收到的数据
 void CMFCSERIALTESTDlg::OnBnClickedRecCBtn()
 {
 	m_HexRcvCBtn.SetCheck(1);
 	m_CharRcvCBtn.SetCheck(0);
 }
 
-
+//选择字符模式显示接收到的数据
 void CMFCSERIALTESTDlg::OnBnClickedCharRecCBtn()
 {
 	m_HexRcvCBtn.SetCheck(0);
 	m_CharRcvCBtn.SetCheck(1);
 }
 
-
+//选择十六进制发送模式
 void CMFCSERIALTESTDlg::OnBnClickedHexSendCBtn()
 {
 	m_HexSendCBtn.SetCheck(1);
 	m_CharSendCBtn.SetCheck(0);
 }
 
-
+//选择字符发送模式
 void CMFCSERIALTESTDlg::OnBnClickedCharSendCBtn()
 {
 	m_HexSendCBtn.SetCheck(0);
 	m_CharSendCBtn.SetCheck(1);
 }
 
-
+//清除发送框内容
 void CMFCSERIALTESTDlg::OnBnClickedClrSData()
 {
 	m_Send = "";
 	UpdateData(FALSE);
 }
 
-
+//发送数据
 void CMFCSERIALTESTDlg::OnBnClickedSendData()
 {
-	if (m_HexSendCBtn.GetCheck())
+	if (m_SerialPort.IsOpen())
 	{
-		UpdateData(TRUE);
-		CByteArray hexdata;
-		String2Hex(m_Send, hexdata);
-		//m_SerialPort.WriteToPort(hexdata);
+		if (m_HexSendCBtn.GetCheck())
+		{
+			UpdateData(TRUE);
+			BYTE* hexdata = new BYTE[m_Send.GetLength() / 2];
+			int len = String2Hex(m_Send, hexdata);
+			m_SerialPort.WriteToPort(hexdata, len);
+		}
+		else if (m_CharSendCBtn.GetCheck())
+		{
+			UpdateData(TRUE);
+			m_SerialPort.WriteToPort(m_Send);
+		}
 	}
-	else if (true)
+	else
 	{
-
+		AfxMessageBox("串口未打开，请打开串口再重试！");
 	}
 }
 
-int CMFCSERIALTESTDlg::String2Hex(CString str, CByteArray &senddata)
+//字符串转十六进制
+int CMFCSERIALTESTDlg::String2Hex(CString str, BYTE *senddata)
 {
 	int hexdata, lowhexdata;
 	int hexdatalen = 0;
 	int len = str.GetLength();
-	senddata.SetSize(len / 2);
+	//senddata.SetSize(len / 2);
 	for (int i = 0; i<len;)
 	{
 		char lstr, hstr = str[i];
@@ -448,7 +464,7 @@ int CMFCSERIALTESTDlg::String2Hex(CString str, CByteArray &senddata)
 		senddata[hexdatalen] = (char)hexdata;
 		hexdatalen++;
 	}
-	senddata.SetSize(hexdatalen);
+	//senddata.SetSize(hexdatalen);
 	return hexdatalen;
 }
 
@@ -461,4 +477,44 @@ char CMFCSERIALTESTDlg::ConvertHexChar(char ch)
 	else if ((ch >= 'a') && (ch <= 'f'))
 		return ch - 'a' + 10;
 	else return (-1);
+}
+
+//重新搜索串口
+void CMFCSERIALTESTDlg::OnBnClickedReFindPort()
+{
+	if (m_SerialPort.IsOpen())
+	{
+		m_SerialPort.ClosePort();
+		m_SerialPort.Hkey2ComboBox(m_ComPortNO);
+	}
+	else
+	{
+		m_SerialPort.Hkey2ComboBox(m_ComPortNO);
+	}
+}
+
+// 保存接收到的数据
+void CMFCSERIALTESTDlg::OnBnClickedSaveRecData()
+{
+	if (m_Receive.GetLength() != 0)
+	{
+		BOOL isOpen = false;//True为打开，False为保存
+		CString defaultDir = _T("E:\\");//默认打开路径
+		CString fileName = _T("data.txt");//默认打开的文件名
+		CString filter = _T("文件(*.txt)|*.txt||");//文件过滤的类型
+		CFileDialog openFileDlg(isOpen, defaultDir, fileName, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, NULL);
+
+		CString strFilePath;
+		CStdioFile file;
+		CString str;
+		//GetDlgItemText(IDC_EDIT1, str);
+		if (IDOK == openFileDlg.DoModal())
+		{
+			strFilePath = openFileDlg.GetFileName();
+			file.Open(strFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeText);
+
+			file.WriteString(m_Receive);
+			file.Close();
+		}
+	}
 }

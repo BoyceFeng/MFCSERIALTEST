@@ -1,10 +1,8 @@
-﻿生成启动时间为 3/23/2016 6:40:38 PM。
+﻿生成启动时间为 3/24/2016 8:54:50 PM。
      1>项目“D:\我的文档\Visual Studio 2013\Projects\MFCSERIALTEST\MFCSERIALTEST\MFCSERIALTEST.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         D:\Software\Visual Studio 2013\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _CRT_SECURE_NO_WARNINGS /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\MFCSERIALTEST.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt MFCSERIALTEST.cpp MFCSERIALTESTDlg.cpp
+         D:\Software\Visual Studio 2013\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _CRT_SECURE_NO_WARNINGS /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\MFCSERIALTEST.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt MFCSERIALTESTDlg.cpp
          MFCSERIALTESTDlg.cpp
-         MFCSERIALTEST.cpp
-         正在生成代码...
        Link:
          D:\Software\Visual Studio 2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\我的文档\Visual Studio 2013\Projects\MFCSERIALTEST\Debug\MFCSERIALTEST.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"D:\Software\Visual Studio 2013\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"D:\我的文档\Visual Studio 2013\Projects\MFCSERIALTEST\Debug\MFCSERIALTEST.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\我的文档\Visual Studio 2013\Projects\MFCSERIALTEST\Debug\MFCSERIALTEST.lib" /MACHINE:X86 Debug\MFCSERIALTEST.res
          Debug\MFCSERIALTEST.obj
@@ -17,4 +15,4 @@
 
 生成成功。
 
-已用时间 00:00:02.98
+已用时间 00:00:05.87
